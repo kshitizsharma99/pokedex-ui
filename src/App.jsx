@@ -1,12 +1,10 @@
 import "./index.css"
+import Layout from "./components/layout"
 
 function App() {
-  
-  
-
   return (
     <>
-     <h1>Pokedex-ui</h1>
+      <Layout />
     </>
   )
 }
