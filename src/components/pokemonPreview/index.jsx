@@ -6,7 +6,7 @@ import Zeusstand from "../../store/zeusStand";
 
 function PokemonPreview() {
     const [pokemonList, setPokemonList] = useState([]);
-    const limit = 52;
+    const limit = 20;
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
 
@@ -51,7 +51,7 @@ function PokemonPreview() {
     return (
         <div className="">
             <PokemonPreviewGrid pokemons={pokemonList} />
-            <div className="justify-center flex mt-2">
+            <div className="justify-center flex pt-5 ">
                 <Pagination
                     current={page}
                     pageSize={limit}

@@ -19,6 +19,11 @@ function PokemonCard({ data, autoClick }) {
                 res.data.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default ||
                 res.data.sprites?.front_default;
 
+            const evolutionChainUrl = speciesRes.data.evolution_chain.url;
+
+            const chainRes = await axios.get(evolutionChainUrl);
+            const chain = chainRes.data.chain;
+
             const hdImage =
                 res.data.sprites?.other?.["official-artwork"]?.front_default ||
                 res.data.sprites?.other?.dream_world?.front_default ||

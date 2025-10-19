@@ -3,7 +3,7 @@ import Layout from "./components/layout"
 
 function App() {
   return (
-    <div className="w-screen flex justify-center">
+    <div className="min-h-screen w-full overflow-x-hidden flex justify-center">
       <Layout />
     </div>
   )

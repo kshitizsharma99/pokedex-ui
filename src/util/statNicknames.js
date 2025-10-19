@@ -6,3 +6,4 @@ const statNicknames = {
     "special-defense": "SPD",
     speed: "SPD"
 };
+export default statNicknames;

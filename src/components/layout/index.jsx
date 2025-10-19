@@ -13,9 +13,9 @@ function Layout() {
     }
 
     return (
-        <div className="w-5/6">
+        <div className="w-5/6 px-2">
             <div className="bg-white mt-5 mb-5 rounded-lg shadow-xl">
-                <Navbar handlePage={handlePage} />
+                <Navbar handlePage={handlePage} activePage={page} />
             </div>
             <div>
                 {
