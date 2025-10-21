@@ -1,17 +1,29 @@
-import { Button, Flex } from 'antd';
+import { Button, Image } from 'antd';
+import { NavLink } from 'react-router-dom';
 
-function Navbar({ handlePage, activePage }) {
-
+function Navbar() {
+    const bannerImg = "/icon/icon_128.png";
 
     return (
-        <div className="navbar p-5 flex">
-            <div className="home-button mx-2 ">
-                <Button onClick={() => { handlePage("home") }} type="text"
-                    className={activePage === "home" ? "!text-red-500 !font-bold" : "!text-gray-600"}>Home</Button>
+        <div className="navbar p-5 flex align-center">
+            <div className="banner mx-1">
+                <Image preview={false} src={bannerImg} height={30} width={30} />
             </div>
-            <div className="pokedex-button mx-2 ">
-                <Button onClick={() => { handlePage("pokedex") }} type="text"
-                    className={activePage === "pokedex" ? "!text-red-500 !font-bold" : "!text-gray-600"}>Pokedex</Button>
+
+            <div className="home-button mx-1">
+                <NavLink to={"/"}>
+                    <Button type="text">
+                        Home
+                    </Button>
+                </NavLink>
+            </div>
+
+            <div className="pokedex-button mx-1">
+                <NavLink to={"/pokedex"}>
+                    <Button type="text">
+                        Pokedex
+                    </Button>
+                </NavLink>
             </div>
         </div>
     )

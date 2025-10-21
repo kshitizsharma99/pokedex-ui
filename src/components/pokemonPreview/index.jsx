@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import axios from "axios";
 import PokemonPreviewGrid from "../pokemonPreviewGrid";
-import { Pagination } from "antd";
-import Zeusstand from "../../store/zeusStand";
+import { Pagination, Skeleton } from "antd";
 
 function PokemonPreview() {
     const [pokemonList, setPokemonList] = useState([]);
     const limit = 20;
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
+    const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    useMemo(() => {
         const offset = (page - 1) * limit;
-
+        setLoading(true);
         axios
             .get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
             .then(async (response) => {
@@ -45,8 +45,11 @@ function PokemonPreview() {
             .catch((error) => {
                 console.error("Error fetching Pokémon list:", error);
             });
+        setLoading(false);
     }, [page]);
 
+    if (loading)
+        return <Skeleton />
 
     return (
         <div className="">

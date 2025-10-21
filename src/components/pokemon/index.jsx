@@ -3,6 +3,7 @@ import Zeusstand from "../../store/zeusStand"
 import PokemonDetail from "../pokemonDetails/pokemonDetails";
 
 function Pokemon({ defaultPokemon }) {
+
     const [item, setItem] = useState(Zeusstand.getState() || defaultPokemon);
     useEffect(() => {
         const unsubscribe = Zeusstand.subscribe((newItem) => {
@@ -11,9 +12,12 @@ function Pokemon({ defaultPokemon }) {
         return unsubscribe;
     }, [defaultPokemon]);
 
+
     if (!item) return <p>Loading Pokémon...</p>;
 
-    if (item.types) return <PokemonDetail pokemon={item} />;
+    if (item.types) return (
+        <PokemonDetail pokemon={item} />
+    );
 
     return <p>Unknown item</p>;
 };

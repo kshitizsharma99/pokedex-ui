@@ -1,12 +1,11 @@
-import { Tag, Button } from "antd";
+import { Tag } from "antd";
 import tagColors from "../../util/tagColors";
 import abilityColors from "../../util/abilityColors";
 import statColors from "../../util/statColors";
 import statNicknames from "../../util/statNicknames";
-import { useNavigate } from "react-router-dom";
 
-function PokemonDetail({ pokemon }) {
-    const navigate = useNavigate();
+
+function PokemonOverview({ pokemon }) {
     const cleanFlavorText = pokemon.description?.replace(/\f/g, ' ') || '';
 
     return (
@@ -33,14 +32,9 @@ function PokemonDetail({ pokemon }) {
                     </Tag>
                 ))}
             </div>
-            <div className="pt-5 pb-2">
-                <Button className="rounded-full w-36 uppercase !font-bold text-2xl" type="primary"
-                    onClick={() => { navigate("/explore") }}>Explore</Button>
-
-            </div>
             <div className="">
-                <div className="font-bold uppercase text-base pt-5 pb-2">Pokedex Entry</div>
-                <div className="text-sm py-3 px-10">{cleanFlavorText}</div>
+                <p className="font-bold uppercase text-base pt-5 pb-2">Pokedex Entry</p>
+                <p className="text-sm pt-2 pb-2 px-2">{cleanFlavorText}</p>
             </div>
             <div>
                 <p className="font-bold uppercase text-sm pt-5 pb-2">Abilities</p>
@@ -99,4 +93,4 @@ function PokemonDetail({ pokemon }) {
     );
 }
 
-export default PokemonDetail;
+export default PokemonOverview;

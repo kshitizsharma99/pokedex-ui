@@ -1,9 +1,11 @@
-import { Card, Tag, Button } from "antd";
+import { Card, Tag } from "antd";
 import tagColors from "../../util/tagColors";
 import Zeusstand from "../../store/zeusStand";
 import axios from "axios";
 import { useEffect } from "react";
+
 function PokemonCard({ data, autoClick }) {
+
     useEffect(() => {
         if (autoClick) handleClick();
     }, [autoClick]);
@@ -57,15 +59,19 @@ function PokemonCard({ data, autoClick }) {
     };
 
     return (
-        <Card hoverable className="text-center cursor-pointer" onClick={handleClick}>
+        <Card
+            hoverable
+            className="text-center cursor-pointer"
+            onClick={handleClick}
+        >
 
-            <img className="mx-auto block w-12 h-12 object-contain" src={data.animated || data.image} alt="" />
+            <img className="mx-auto block w-12 h-12 object-contain" src={data.animated || data.image} loading="lazy" />
 
-            <p className="font-bold mt-1 mb-1 text-slate-400 text-xs">N&deg;{data.id}</p>
+            <p className="font-bold mt-2 text-slate-400 text-xs">N&deg;{data.id}</p>
 
-            <p className="font-bold capitalize m-3 -mt-1">{data.name}</p>
+            <p className="font-bold capitalize p-1">{data.name}</p>
 
-            <div className="flex gap-2 justify-center ">
+            <div className="flex align-center justify-center mt-2">
                 {data.types.map((type, i) => (
 
                     <Tag key={i} className="font-bold uppercase" color={tagColors[type.toLowerCase()] || "default"}>{type}</Tag>
@@ -75,4 +81,4 @@ function PokemonCard({ data, autoClick }) {
     )
 }
 
-export default PokemonCard
+export default PokemonCard;
