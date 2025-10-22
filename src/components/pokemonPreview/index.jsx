@@ -3,16 +3,27 @@ import axios from "axios";
 import PokemonPreviewGrid from "../pokemonPreviewGrid";
 import { Pagination, Skeleton } from "antd";
 
-function PokemonPreview({ searchText, selectedType }) {
-    const [pokemonList, setPokemonList] = useState([]); // Current page Pokémon
+function PokemonPreview({ searchText, selectedType, onSmallScreenCardClick, isPanelHidden }) {
+    const [pokemonList, setPokemonList] = useState([]);
     const [total, setTotal] = useState(0);
-    const [allPokemonList, setAllPokemonList] = useState(null); // All Pokémon for filtering
-    const [filteredList, setFilteredList] = useState([]); // Filtered Pokémon (when filtering)
+    const [allPokemonList, setAllPokemonList] = useState(null);
+    const [filteredList, setFilteredList] = useState([]);
     const [page, setPage] = useState(1);
     const limit = 20;
     const [loading, setLoading] = useState(false);
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-    // Fetch paginated Pokémon for unfiltered browsing
+    useEffect(() => {
+        const handleResize = () => {
+            setIsSmallScreen(window.innerWidth < 768);
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+
     useEffect(() => {
         const fetchPokemon = async () => {
             try {
@@ -41,7 +52,6 @@ function PokemonPreview({ searchText, selectedType }) {
 
                 setPokemonList(pokemonDetails);
 
-                // Only set filteredList if no filter is active
                 if (!searchText && !selectedType) setFilteredList(pokemonDetails);
 
             } catch (err) {
@@ -51,19 +61,16 @@ function PokemonPreview({ searchText, selectedType }) {
             }
         };
 
-        // Only fetch paginated Pokémon if no filter
         if (!searchText && !selectedType) {
             fetchPokemon();
         }
     }, [page, searchText, selectedType]);
 
-    // Apply filter
     useEffect(() => {
         const applyFilter = async () => {
             if (searchText || selectedType) {
                 let list = allPokemonList;
 
-                // Fetch all Pokémon only once for filtering
                 if (!list) {
                     try {
                         setLoading(true);
@@ -109,9 +116,9 @@ function PokemonPreview({ searchText, selectedType }) {
 
 
                 setFilteredList(filtered);
-                setPage(1); // reset to first page on filter
+                setPage(1);
             } else {
-                // If no filter, just show current page Pokémon
+
                 setFilteredList(pokemonList);
             }
         };
@@ -119,20 +126,19 @@ function PokemonPreview({ searchText, selectedType }) {
         applyFilter();
     }, [searchText, selectedType, allPokemonList, pokemonList]);
 
-    // Paginate list: only slice if filter is active
     const paginatedList = useMemo(() => {
         if (searchText || selectedType) {
             const start = (page - 1) * limit;
             return filteredList.slice(start, start + limit);
         }
-        return pokemonList; // for unfiltered browsing, use current page
+        return pokemonList;
     }, [filteredList, pokemonList, page, searchText, selectedType]);
 
     if (loading) return <Skeleton active />;
 
     return (
         <>
-            <PokemonPreviewGrid pokemons={paginatedList} />
+            <PokemonPreviewGrid pokemons={paginatedList} onSmallScreenCardClick={onSmallScreenCardClick} isPanelHidden={isPanelHidden} />
             <div className="justify-center flex pt-5">
                 <Pagination
                     current={page}
@@ -140,6 +146,7 @@ function PokemonPreview({ searchText, selectedType }) {
                     total={searchText || selectedType ? filteredList.length : total}
                     onChange={setPage}
                     showSizeChanger={false}
+                    size={isSmallScreen ? "small" : "default"}
                 />
             </div>
         </>

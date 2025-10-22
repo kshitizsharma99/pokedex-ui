@@ -11,7 +11,7 @@ const EvolutionTab = ({ pokemons }) => {
     return (
         <div>
             <h2>Evolution Chain</h2>
-            <div className="flex gap-8 items-center">
+            <div className="flex flex-wrap gap-8 items-center">
                 {pokemons.evolution.map((evo, index) => (
                     <div key={index} className="text-center">
                         <img src={evo.image} alt={evo.name} width={150} />

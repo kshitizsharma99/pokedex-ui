@@ -75,7 +75,7 @@ function PokemonOverview({ pokemon }) {
     ];
 
     return (
-        <div className=" rounded-lg bg-white sahdow-xl py-2 ">
+        <div className=" rounded-lg bg-white sahdow-xl py-2 !sm:text-center">
             <div className="my-1 px-7">
                 <Button className="rounded-full w-36 !text-base !bg-transparent !border-none !shadow-none !text-black hover:!bg-transparent hover:!text-black focus:!outline-none focus:!shadow-none"
                     type="primary"
@@ -84,14 +84,14 @@ function PokemonOverview({ pokemon }) {
 
             </div>
 
-            <div className="flex px-20">
+            <div className="flex flex-col lg:flex-row px-4 lg:px-20 gap-5">
 
-                <div className="w-1/3 ">
-                    <div className="flex flex-wrap justify-start items-end gap-2 ">
-                        <p className="font-bold capitalize text-4xl">{pokemon.name}</p>
-                        <p className="text-gray-500 text-sm pb-3">N° {pokemon.id}</p>
+                <div className="w-full lg:w-1/3 flex flex-col items-center lg:items-start mx-auto">
+                    <div className="flex flex-wrap lg:justify-start lg:items-end gap-2 ">
+                        <p className="font-bold capitalize text-2xl sm:text-3xl lg:text-4xl">{pokemon.name}</p>
+                        <p className="text-gray-500 text-xs sm:text-sm lg:text-sm pb-3">N° {pokemon.id}</p>
                     </div>
-                    <div className="flex gap-1 justify-start pt-2 pb-2">
+                    <div className="flex flex-wrap gap-1 lg:text-left lg:justify-start pt-2 pb-2">
                         {pokemon.types.map((type, i) => (
                             <Tag
                                 key={i}
@@ -109,12 +109,12 @@ function PokemonOverview({ pokemon }) {
                                 : pokemon?.images?.normal || pokemon.highImage || pokemon.image
                         }
                         alt={pokemon.name}
-                        className="w-60 h-60 object-contain mt-4"
+                        className="w-60 h-60 sm:w-64 sm:h-64 lg:w-60 lg:h-60 object-contain mt-4"
                     />
 
                     <div>
                         <p className="font-bold capitalize my-2 text-base">Versions</p>
-                        <div className="flex gap-1 flex-wrap justify-start pt-2 pb-2">
+                        <div className="flex gap-1 flex-wrap lg:justify-start pt-2 pb-2">
                             <Tag
                                 className="!font-bold !uppercase !rounded-full cursor-pointer"
                                 type={!viewShiny ? "primary" : "default"}
@@ -134,7 +134,7 @@ function PokemonOverview({ pokemon }) {
                     </div>
 
                 </div>
-                <div className="w-2/3">
+                <div className="w-full lg:w-2/3">
                     <Tabs defaultActiveKey="1" items={tabItems} />
 
                 </div>

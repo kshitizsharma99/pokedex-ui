@@ -5,6 +5,8 @@ const usePokemonStore = create((set, get) => ({
     selectedPokemon: null,
     setSelectedPokemon: (pokemon) => set({ selectedPokemon: pokemon }),
 
+    showPokeCardPopup: false,
+    setShowPokeCardPopup: (value) => set({ showPokeCardPopup: value }),
 
     fetchMorePokemonDetails: async () => {
         const pokemon = get().selectedPokemon;

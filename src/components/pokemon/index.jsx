@@ -1,21 +1,20 @@
-
 import PokemonDetail from "../pokemonDetails/pokemonDetails";
 import usePokemonStore from "../../store/pokemonStore";
 
-function Pokemon({ defaultPokemon }) {
-
+function Pokemon() {
     const selectedPokemon = usePokemonStore((state) => state.selectedPokemon);
 
-    const item = selectedPokemon;
+    if (!selectedPokemon) return <p>Loading Pokémon...</p>;
 
+    if (selectedPokemon.types) {
+        return (
+            <div>
+                <PokemonDetail pokemon={selectedPokemon} />
+            </div>
+        );
+    }
 
-    if (!item) return <p>Loading Pokémon...</p>;
+    return <p>Unknown Pokémon</p>;
+}
 
-    if (item.types) return (
-        <PokemonDetail pokemon={item} />
-    );
-
-    return <p>Unknown item</p>;
-};
-
-export default Pokemon
+export default Pokemon;

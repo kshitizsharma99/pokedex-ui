@@ -5,12 +5,12 @@ function Navbar() {
     const bannerImg = "/icon/icon_128.png";
 
     return (
-        <div className="navbar p-5 flex align-center ">
+        <div className="navbar p-5 flex align-center flex-wrap">
             <div className="banner mx-1">
                 <Image preview={false} src={bannerImg} height={30} width={30} />
             </div>
 
-            <div className="home-button mx-1">
+            <div className="home-button mx-1 ">
                 <NavLink to={"/"}>
                     <Button type="text">
                         Home
