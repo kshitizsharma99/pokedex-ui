@@ -2,32 +2,38 @@ import { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import PokemonPreviewGrid from "../pokemonPreviewGrid";
 import { Pagination, Skeleton } from "antd";
-import Filter from "../filter";
 
 function PokemonPreview({ searchText, selectedType }) {
-    const [pokemonList, setPokemonList] = useState([]);
-    const [allPokemonList, setAllPokemonList] = useState(null);
-    const [filteredList, setFilteredList] = useState([]);
+    const [pokemonList, setPokemonList] = useState([]); // Current page Pokémon
+    const [total, setTotal] = useState(0);
+    const [allPokemonList, setAllPokemonList] = useState(null); // All Pokémon for filtering
+    const [filteredList, setFilteredList] = useState([]); // Filtered Pokémon (when filtering)
     const [page, setPage] = useState(1);
     const limit = 20;
     const [loading, setLoading] = useState(false);
 
-    // Fetch Pokémon (same as before)
+    // Fetch paginated Pokémon for unfiltered browsing
     useEffect(() => {
         const fetchPokemon = async () => {
             try {
                 setLoading(true);
                 const offset = (page - 1) * limit;
                 const response = await axios.get(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`);
-                const results = response.data.results;
 
+                setTotal(response.data.count);
+
+                const results = response.data.results;
                 const pokemonDetails = await Promise.all(
                     results.map(async (pokemon) => {
                         const res = await axios.get(pokemon.url);
+                        const animatedSprite =
+                            res.data.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default ||
+                            res.data.sprites.front_default;
                         return {
                             id: res.data.id,
                             name: res.data.name,
                             image: res.data.sprites.front_default,
+                            animated: animatedSprite,
                             types: res.data.types.map(t => t.type.name),
                         };
                     })
@@ -35,8 +41,9 @@ function PokemonPreview({ searchText, selectedType }) {
 
                 setPokemonList(pokemonDetails);
 
-                // If no filter, show current page
+                // Only set filteredList if no filter is active
                 if (!searchText && !selectedType) setFilteredList(pokemonDetails);
+
             } catch (err) {
                 console.error(err);
             } finally {
@@ -44,6 +51,7 @@ function PokemonPreview({ searchText, selectedType }) {
             }
         };
 
+        // Only fetch paginated Pokémon if no filter
         if (!searchText && !selectedType) {
             fetchPokemon();
         }
@@ -55,6 +63,7 @@ function PokemonPreview({ searchText, selectedType }) {
             if (searchText || selectedType) {
                 let list = allPokemonList;
 
+                // Fetch all Pokémon only once for filtering
                 if (!list) {
                     try {
                         setLoading(true);
@@ -64,10 +73,15 @@ function PokemonPreview({ searchText, selectedType }) {
                         list = await Promise.all(
                             results.map(async (pokemon) => {
                                 const res = await axios.get(pokemon.url);
+                                const animatedSprite =
+                                    res.data.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default ||
+                                    res.data.sprites.front_default;
+
                                 return {
                                     id: res.data.id,
                                     name: res.data.name,
                                     image: res.data.sprites.front_default,
+                                    animated: animatedSprite,
                                     types: res.data.types.map(t => t.type.name),
                                 };
                             })
@@ -82,12 +96,22 @@ function PokemonPreview({ searchText, selectedType }) {
                 }
 
                 let filtered = list;
-                if (searchText) filtered = filtered.filter(p => p.name.toLowerCase().includes(searchText.toLowerCase()));
-                if (selectedType) filtered = filtered.filter(p => p.types.includes(selectedType));
+
+                if (searchText)
+                    filtered = filtered.filter(p =>
+                        p.name.toLowerCase().includes(searchText.toLowerCase())
+                    );
+
+                if (selectedType && selectedType.length > 0)
+                    filtered = filtered.filter(p =>
+                        selectedType.some(type => p.types.includes(type))
+                    );
+
 
                 setFilteredList(filtered);
-                setPage(1);
+                setPage(1); // reset to first page on filter
             } else {
+                // If no filter, just show current page Pokémon
                 setFilteredList(pokemonList);
             }
         };
@@ -95,10 +119,14 @@ function PokemonPreview({ searchText, selectedType }) {
         applyFilter();
     }, [searchText, selectedType, allPokemonList, pokemonList]);
 
+    // Paginate list: only slice if filter is active
     const paginatedList = useMemo(() => {
-        const start = (page - 1) * limit;
-        return filteredList.slice(start, start + limit);
-    }, [filteredList, page]);
+        if (searchText || selectedType) {
+            const start = (page - 1) * limit;
+            return filteredList.slice(start, start + limit);
+        }
+        return pokemonList; // for unfiltered browsing, use current page
+    }, [filteredList, pokemonList, page, searchText, selectedType]);
 
     if (loading) return <Skeleton active />;
 
@@ -109,7 +137,7 @@ function PokemonPreview({ searchText, selectedType }) {
                 <Pagination
                     current={page}
                     pageSize={limit}
-                    total={filteredList.length}
+                    total={searchText || selectedType ? filteredList.length : total}
                     onChange={setPage}
                     showSizeChanger={false}
                 />
@@ -119,4 +147,3 @@ function PokemonPreview({ searchText, selectedType }) {
 }
 
 export default PokemonPreview;
-

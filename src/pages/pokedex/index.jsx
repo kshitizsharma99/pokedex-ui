@@ -7,19 +7,20 @@ import { useState } from "react"
 function Pokedex() {
 
     const [searchText, setSearchText] = useState("");
-    const [selectedType, setSelectedType] = useState(null)
+    const [selectedType, setSelectedType] = useState([]);
+
 
     return (
         <div className="flex">
             <div className="w-2/3">
-                <div className="bg-white rounded-lg shadow-xl mt-5 mb-5 mr-5">
+                <div >
                     <Filter
                         onSearch={setSearchText}
                         selectedType={selectedType}
                         setSelectedType={setSelectedType}
                     />
                 </div>
-                <div className=" mt-5 mb-5 mr-5">
+                <div className=" mt-5 mb-5 ">
                     <PokemonPreview
                         searchText={searchText}
                         selectedType={selectedType}
