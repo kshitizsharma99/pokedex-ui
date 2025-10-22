@@ -1,14 +1,13 @@
 import { Card, Tag } from "antd";
 import tagColors from "../../util/tagColors";
-import Zeusstand from "../../store/zeusStand";
 import axios from "axios";
+import usePokemonStore from "../../store/pokemonStore";
 import { useEffect } from "react";
 
-function PokemonCard({ data, autoClick }) {
 
-    useEffect(() => {
-        if (autoClick) handleClick();
-    }, [autoClick]);
+function PokemonCard({ data, autoSelect }) {
+
+    const setSelectedPokemon = usePokemonStore((state) => state.setSelectedPokemon);
 
     const handleClick = async () => {
         try {
@@ -20,11 +19,6 @@ function PokemonCard({ data, autoClick }) {
             const animatedSprite =
                 res.data.sprites?.versions?.["generation-v"]?.["black-white"]?.animated?.front_default ||
                 res.data.sprites?.front_default;
-
-            const evolutionChainUrl = speciesRes.data.evolution_chain.url;
-
-            const chainRes = await axios.get(evolutionChainUrl);
-            const chain = chainRes.data.chain;
 
             const hdImage =
                 res.data.sprites?.other?.["official-artwork"]?.front_default ||
@@ -51,12 +45,18 @@ function PokemonCard({ data, autoClick }) {
                 description: flavorText,
             };
 
-            Zeusstand.send(fullData);
+
+            setSelectedPokemon(fullData);
+
 
         } catch (error) {
             console.error("Error fetching Pokémon details:", error);
         }
     };
+
+    useEffect(() => {
+        if (autoSelect) handleClick();
+    }, [autoSelect]);
 
     return (
         <Card

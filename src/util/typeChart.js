@@ -1,0 +1,21 @@
+const typeChart = {
+    normal: { weak: ["fighting"] },
+    fire: { weak: ["water", "ground", "rock"] },
+    water: { weak: ["electric", "grass"] },
+    electric: { weak: ["ground"] },
+    grass: { weak: ["fire", "ice", "poison", "flying", "bug"] },
+    ice: { weak: ["fire", "fighting", "rock", "steel"] },
+    fighting: { weak: ["flying", "psychic", "fairy"] },
+    poison: { weak: ["ground", "psychic"] },
+    ground: { weak: ["water", "grass", "ice"] },
+    flying: { weak: ["electric", "ice", "rock"] },
+    psychic: { weak: ["bug", "ghost", "dark"] },
+    bug: { weak: ["fire", "flying", "rock"] },
+    rock: { weak: ["water", "grass", "fighting", "ground", "steel"] },
+    ghost: { weak: ["ghost", "dark"] },
+    dragon: { weak: ["ice", "dragon", "fairy"] },
+    dark: { weak: ["fighting", "bug", "fairy"] },
+    steel: { weak: ["fire", "fighting", "ground"] },
+    fairy: { weak: ["poison", "steel"] },
+};
+export default typeChart;

@@ -1,25 +1,20 @@
-import { useEffect, useState } from "react";
-import Zeusstand from "../../store/zeusStand";
+import { useEffect } from "react";
+import usePokemonStore from "../../store/pokemonStore";
 import PokemonOverview from "../../components/pokemonOverview";
 
 function Explore() {
-    const [item, setItem] = useState(Zeusstand.getState());
+    const selectedPokemon = usePokemonStore(state => state.selectedPokemon);
+    const fetchMorePokemonDetails = usePokemonStore(state => state.fetchMorePokemonDetails);
 
     useEffect(() => {
-        const unsubscribe = Zeusstand.subscribe((newItem) => {
-            setItem(newItem);
-        });
-        return unsubscribe;
-    }, []);
+        if (selectedPokemon) {
+            fetchMorePokemonDetails(); // ✅ safe now
+        }
+    }, [selectedPokemon]);
 
-    if (!item) return <p>Loading Pokémon...</p>;
+    if (!selectedPokemon) return <p>Loading Pokémon...</p>;
 
-    if (item.types) return (
-        <PokemonOverview pokemon={item} />
-
-    );
-
-    return <p>Unknown item</p>;
-};
+    return <PokemonOverview pokemon={selectedPokemon} />;
+}
 
 export default Explore;

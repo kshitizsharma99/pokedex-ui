@@ -1,94 +1,145 @@
-import { Tag } from "antd";
+import { Tag, Button, Tabs } from "antd";
 import tagColors from "../../util/tagColors";
+import { useState } from "react";
 import abilityColors from "../../util/abilityColors";
 import statColors from "../../util/statColors";
 import statNicknames from "../../util/statNicknames";
+import AboutTab from "../aboutTab";
+import AboutLore from "../aboutLore";
+import EvolutionTab from "../evolutionTab";
+import { useNavigate } from "react-router-dom";
+
 
 
 function PokemonOverview({ pokemon }) {
-    const cleanFlavorText = pokemon.description?.replace(/\f/g, ' ') || '';
+
+    const [viewShiny, setViewShiny] = useState(false);
+    const navigate = useNavigate();
+
+
+    const tabItems = [
+        {
+            key: "1",
+            label: "About",
+            children: (
+                <div>
+                    <AboutTab pokemons={pokemon} />
+                </div>
+
+            ),
+        },
+        {
+            key: "2",
+            label: "Lore",
+            children: (
+                <div className="h-[445px] overflow-y-auto p-2">
+                    <AboutLore pokemons={pokemon} />
+
+                </div>
+            ),
+        },
+        {
+            key: "3",
+            label: "Moves",
+            children: (
+                <div className="h-[445px] overflow-y-auto p-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {pokemon.movesDetails?.map((move, i) => (
+                            <div key={i} className="p-3 border rounded-lg shadow-sm">
+                                <p className="capitalize font-bold text-base">{move.name}</p>
+                                <p className="text-xs text-gray-500 mb-1">
+                                    {move.damage_class} | Type: <span className="uppercase">{move.type}</span>
+                                </p>
+                                <p className="text-xs">
+                                    Power: {move.power} | Accuracy: {move.accuracy}% | PP: {move.pp}
+                                </p>
+                                <p className="text-xs mt-2 text-gray-600">{move.description}</p>
+                            </div>
+                        )) || <p className="text-gray-500">Loading moves...</p>}
+                    </div>
+                </div>
+            ),
+        },
+        {
+            key: "4",
+            label: "Evolution",
+            children: (
+                <div>
+                    <EvolutionTab pokemons={pokemon} />
+                </div>
+
+            ),
+        },
+
+
+    ];
 
     return (
-        <div className="text-center">
-
-            <img
-                src={pokemon.highImage || pokemon.image}
-                alt={pokemon.name}
-                className="mx-auto block w-60 h-60 object-contain"
-            />
-
-            <p className="text-gray-500 text-xs">N°{pokemon.id}</p>
-
-            <p className="font-bold capitalize text-xl pb-2 pt-2">{pokemon.name}</p>
-
-            <div className="flex gap-2 justify-center pt-2 pb-2">
-                {pokemon.types.map((type, i) => (
-                    <Tag
-                        key={i}
-                        className="!font-bold !uppercase"
-                        color={tagColors[type.toLowerCase()] || "default"}
-                    >
-                        {type}
-                    </Tag>
-                ))}
-            </div>
-            <div className="">
-                <p className="font-bold uppercase text-base pt-5 pb-2">Pokedex Entry</p>
-                <p className="text-sm pt-2 pb-2 px-2">{cleanFlavorText}</p>
-            </div>
-            <div>
-                <p className="font-bold uppercase text-sm pt-5 pb-2">Abilities</p>
-                <div className="flex flex-wrap justify-evenly pt-2 pb-2">
-                    {pokemon.abilities.map((ability, i) => (
-                        <Tag
-                            key={i}
-                            className="!font-bold !capitalize !text-xs !pr-7 !pl-7 !pt-2 !pb-2 !rounded-full !min-w-[90px]"
-                            color={abilityColors[ability] || "default"}
-                        >
-                            {ability}
-                        </Tag>
-                    ))}
-                </div>
-            </div>
-            <div className="flex flex-wrap mt-5 mb-5 justify-evenly">
-                <div>
-                    <p className="font-bold uppercase text-sm p-2">Height</p>
-                    <Tag className="!font-bold !text-xs  !text-center  !pt-2 !pb-2 !rounded-full !mr-0 !w-24">{pokemon.height}m</Tag>
-                </div>
-                <div>
-                    <p className="font-bold uppercase text-sm p-2">weight</p>
-                    <Tag className="!font-bold !capitalize !text-xs !text-center !pt-2 !pb-2 !rounded-full !mr-0 !w-24">{pokemon.weight}Kg</Tag>
-                </div>
+        <div className=" rounded-lg bg-white sahdow-xl py-2 ">
+            <div className="my-1 px-7">
+                <Button className="rounded-full w-36 !text-base !bg-transparent !border-none !shadow-none !text-black hover:!bg-transparent hover:!text-black focus:!outline-none focus:!shadow-none"
+                    type="primary"
+                    icon={<span className="text-xl mr-0.5">←</span>}
+                    onClick={() => { navigate("/pokedex") }}></Button>
 
             </div>
-            <div className="flex flex-wrap mt-5 mb-5 justify-evenly">
-                <div>
-                    <p className="font-bold uppercase text-sm p-2">Weaknesses</p>
-                    <Tag className="!font-bold !text-xs !text-center !pt-2 !pb-2 !rounded-full !mr-0 !w-24">{pokemon.height}m</Tag>
-                </div>
-                <div>
-                    <p className="font-bold uppercase text-sm p-2">Base Exp</p>
-                    <Tag className="!font-bold !capitalize !text-xs !w-24 !pt-2 !pb-2 !rounded-full !mr-0 !text-center">{pokemon.experience}</Tag>
-                </div>
 
+            <div className="flex px-20">
+
+                <div className="w-1/3 ">
+                    <div className="flex flex-wrap justify-start items-end gap-2 ">
+                        <p className="font-bold capitalize text-4xl">{pokemon.name}</p>
+                        <p className="text-gray-500 text-sm pb-3">N° {pokemon.id}</p>
+                    </div>
+                    <div className="flex gap-1 justify-start pt-2 pb-2">
+                        {pokemon.types.map((type, i) => (
+                            <Tag
+                                key={i}
+                                className="!font-bold !uppercase !rounded-full"
+                                color={tagColors[type.toLowerCase()] || "default"}
+                            >
+                                {type}
+                            </Tag>
+                        ))}
+                    </div>
+                    <img
+                        src={
+                            viewShiny
+                                ? pokemon?.images?.shiny || pokemon.highImage || pokemon.image
+                                : pokemon?.images?.normal || pokemon.highImage || pokemon.image
+                        }
+                        alt={pokemon.name}
+                        className="w-60 h-60 object-contain mt-4"
+                    />
+
+                    <div>
+                        <p className="font-bold capitalize my-2 text-base">Versions</p>
+                        <div className="flex gap-1 flex-wrap justify-start pt-2 pb-2">
+                            <Tag
+                                className="!font-bold !uppercase !rounded-full cursor-pointer"
+                                type={!viewShiny ? "primary" : "default"}
+                                onClick={() => setViewShiny(false)}
+                            >
+                                Normal
+                            </Tag>
+                            <Tag
+                                className="!font-bold !uppercase !rounded-full cursor-pointer"
+                                type={viewShiny ? "primary" : "default"}
+                                onClick={() => setViewShiny(true)}
+                                disabled={!pokemon?.images?.shiny}
+                            >
+                                Shiny ✨
+                            </Tag>
+                        </div>
+                    </div>
+
+                </div>
+                <div className="w-2/3">
+                    <Tabs defaultActiveKey="1" items={tabItems} />
+
+                </div>
             </div>
-            <div className="font-bold uppercase text-sm">
-                <p className="font-bold uppercase text-sm pt-5 pb-2">Base Stats</p>
-                <div className="flex flex-wrap justify-evenly pt-5">
-                    {pokemon.stats.map((stat, i) => (
-                        <Tag
-                            key={i}
-                            className="!font-bold !uppercase !text-[10px] !rounded-full !flex !flex-col !items-center !pb-1 !pt-2 !gap-3"
-                        >
-                            <p className={`text-white px-1 py-1 rounded-full  ${statColors[stat.name] || "bg-gray-400"}`}
 
-                            >{statNicknames[stat.name] || stat.name.replace("-", " ")}</p>
-                            <p className="text-[10px]">{stat.base}</p>
-                        </Tag>
-                    ))}
-                </div>
-
-            </div>
         </div>
     );
 }
