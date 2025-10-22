@@ -10,7 +10,7 @@ function Navbar() {
                 <Image preview={false} src={bannerImg} height={30} width={30} />
             </div>
 
-            <div className="home-button mx-1 ">
+            <div className="home-button">
                 <NavLink to={"/"}>
                     <Button type="text">
                         Home
@@ -18,7 +18,7 @@ function Navbar() {
                 </NavLink>
             </div>
 
-            <div className="pokedex-button mx-1">
+            <div className="pokedex-button">
                 <NavLink to={"/pokedex"}>
                     <Button type="text">
                         Pokedex

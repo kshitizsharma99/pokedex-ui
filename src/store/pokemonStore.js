@@ -48,8 +48,6 @@ const usePokemonStore = create((set, get) => ({
             };
 
             const evolutionData = await fetchEvolutions(chain);
-
-
             const normalHD =
                 res.data.sprites.other["official-artwork"].front_default;
 
@@ -63,10 +61,7 @@ const usePokemonStore = create((set, get) => ({
                     version: entry.version.name,
                 }));
 
-
-
             const moves = res.data.moves;
-
 
             const movesDetails = await Promise.all(
                 moves.map(async (m) => {
@@ -88,7 +83,6 @@ const usePokemonStore = create((set, get) => ({
             set({
                 selectedPokemon: {
                     ...pokemon,
-
                     movesDetails: movesDetails,
                     englishFlavorTexts: englishFlavorTexts,
                     evolution: evolutionData,
