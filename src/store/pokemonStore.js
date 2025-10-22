@@ -41,7 +41,7 @@ const usePokemonStore = create((set, get) => ({
                         types: evoRes.data.types.map(t => t.type.name),
                     });
 
-                    current = current.evolves_to[0]; // Move to next evolution
+                    current = current.evolves_to[0];
                 }
 
                 return evoData;
@@ -67,7 +67,7 @@ const usePokemonStore = create((set, get) => ({
 
             const moves = res.data.moves;
 
-            // Fetch full move info
+
             const movesDetails = await Promise.all(
                 moves.map(async (m) => {
                     const moveRes = await axios.get(m.move.url);

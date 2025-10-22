@@ -1,10 +1,10 @@
 const barColors = {
-    hp: '#22c55e',            // green-500
-    attack: '#f97316',        // orange-500
-    defense: '#eab308',       // yellow-500
-    'special-attack': '#ec4899', // pink-500
-    'special-defense': '#78716c', // stone-500
-    speed: '#3b82f6',         // blue-500
+    hp: '#22c55e',
+    attack: '#f97316',
+    defense: '#eab308',
+    'special-attack': '#ec4899',
+    'special-defense': '#78716c',
+    speed: '#3b82f6',
 };
 
 export default barColors;

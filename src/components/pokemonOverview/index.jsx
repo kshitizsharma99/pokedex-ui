@@ -75,7 +75,7 @@ function PokemonOverview({ pokemon }) {
     ];
 
     return (
-        <div className=" rounded-lg bg-white sahdow-xl py-2 !sm:text-center">
+        <div className=" rounded-lg bg-white sahdow-xl py-2 ">
             <div className="my-1 px-7">
                 <Button className="rounded-full w-36 !text-base !bg-transparent !border-none !shadow-none !text-black hover:!bg-transparent hover:!text-black focus:!outline-none focus:!shadow-none"
                     type="primary"

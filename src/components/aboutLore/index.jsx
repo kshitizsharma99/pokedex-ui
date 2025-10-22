@@ -17,7 +17,7 @@ function AboutLore({ pokemons }) {
             });
         }
     });
-    if (!pokemons) return <p>Loading Lore...</p>;
+
     return (
         <div className="space-y-2">
             {uniqueTexts.map((entry, i) => (

@@ -12,7 +12,7 @@ function Explore() {
 
     useEffect(() => {
         if (selectedPokemon) {
-            fetchMorePokemonDetails(); // ✅ safe now
+            fetchMorePokemonDetails();
         }
     }, [selectedPokemon]);
 
